@@ -2,16 +2,15 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
+	"github.com/BurntSushi/toml"
+	"github.com/ChimeraCoder/anaconda"
 	"github.com/andlabs/ui"
+	"github.com/jasonlvhit/gocron"
 	"io/ioutil"
 	"log"
 	"os"
-
-	"fmt"
-
-	"github.com/BurntSushi/toml"
-	"github.com/ChimeraCoder/anaconda"
-	"github.com/jasonlvhit/gocron"
 )
 
 // JSONData holds the array of Tweets§
@@ -138,4 +137,18 @@ func (t *TwitterAuthKeys) loadFromTomlFile(filename string) {
 	if _, err := toml.Decode(string(data), t); err != nil {
 		log.Fatal(fmt.Sprintf("Failed to decode %s file:%s", filename, err.Error()))
 	}
+}
+
+func (t *TwitterAuthKeys) saveToTomlFile(filename string) error {
+	f, err := os.Create(filename)
+	if err != nil {
+		var overrideError error
+		f, overrideError = os.Open(filename)
+		if overrideError != nil {
+			return errors.New(err.Error() + ";" + overrideError.Error())
+		}
+	}
+	encoder := toml.NewEncoder(f)
+	encoder.Encode(t)
+	return nil
 }
