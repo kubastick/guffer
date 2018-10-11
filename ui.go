@@ -4,7 +4,7 @@ import "github.com/andlabs/ui"
 
 func setupUI() {
 	// Setup window
-	mainWindow := ui.NewWindow("Guffer", 640, 480, true)
+	mainWindow := ui.NewWindow("Guffer", 640, 480, false)
 	// Close callback
 	mainWindow.OnClosing(func(window *ui.Window) bool {
 		mainWindow.Destroy()
@@ -47,7 +47,7 @@ func setupUI() {
 	form.Append("Access token:  ", accessTokenSecret, false)
 	form.Append("", ui.NewLabel(""), false)
 
-	// Load and save button
+	// Load and save buttons
 	apiKeysButtons := ui.NewHorizontalBox()
 	openButton := ui.NewButton("Open saved auth file")
 	openButton.OnClicked(func(button *ui.Button) {
@@ -66,10 +66,20 @@ func setupUI() {
 		if err != nil {
 			ui.MsgBoxError(mainWindow, "Error!", "Failed to save file:"+err.Error())
 		} else {
-			ui.MsgBox(mainWindow, "Succes", "The file has been saved successfully")
+			ui.MsgBox(mainWindow, "Success", "The file has been saved successfully")
 		}
 	})
 	apiKeysButtons.Append(openButton, false)
+	apiKeysButtons.Append(ui.NewLabel(""), true)
 	apiKeysButtons.Append(saveButton, false)
+	vBox.Append(ui.NewLabel(""), false)
 	vBox.Append(apiKeysButtons, false)
+	// Tweets group
+	vBox.Append(ui.NewLabel(""), false)
+	tweets := ui.NewGroup("Tweets")
+	vBox.Append(tweets, true)
+	// About text
+	vBox.Append(ui.NewLabel(""), false)
+	about := ui.NewLabel("Guffer is open-source project! Contribute at https://github.com/mrichman/guffer")
+	vBox.Append(about, false)
 }
