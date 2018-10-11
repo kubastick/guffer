@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/andlabs/ui"
 	"io/ioutil"
 	"log"
 	"os"
@@ -13,7 +14,7 @@ import (
 	"github.com/jasonlvhit/gocron"
 )
 
-// JSONData holds the array of Tweets
+// JSONData holds the array of Tweets§
 type JSONData struct {
 	Tweets []Tweet
 }
@@ -36,7 +37,9 @@ var api *anaconda.TwitterApi
 var auth TwitterAuthKeys
 
 func main() {
-
+	ui.Main(setupUI)
+}
+func main2() {
 	if len(os.Args) == 1 {
 		fmt.Println("Usage: guffer guffer.json <auth.toml>")
 		os.Exit(1)
@@ -62,7 +65,7 @@ func main() {
 
 	file, err := ioutil.ReadFile(configFile)
 	if err != nil {
-		log.Fatalf("Eror opening file %s: %v", configFile, err)
+		log.Fatalf("Error opening file %s: %v", configFile, err)
 		return
 	}
 
