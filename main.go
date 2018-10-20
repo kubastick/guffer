@@ -3,10 +3,12 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"flag"
 	"fmt"
 	"github.com/BurntSushi/toml"
 	"github.com/ChimeraCoder/anaconda"
 	"github.com/andlabs/ui"
+	_ "github.com/andlabs/ui/winmanifest"
 	"github.com/jasonlvhit/gocron"
 	"io/ioutil"
 	"log"
@@ -36,9 +38,14 @@ var api *anaconda.TwitterApi
 var auth TwitterAuthKeys
 
 func main() {
-	ui.Main(setupUI)
+	enableUI := *flag.Bool("GUI", true, "enables user interface (experimental)")
+	if enableUI {
+		ui.Main(setupUI)
+	} else {
+		cli()
+	}
 }
-func main2() {
+func cli() {
 	if len(os.Args) == 1 {
 		fmt.Println("Usage: guffer guffer.json <auth.toml>")
 		os.Exit(1)

@@ -78,8 +78,35 @@ func setupUI() {
 	vBox.Append(ui.NewLabel(""), false)
 	tweets := ui.NewGroup("Tweets")
 	vBox.Append(tweets, true)
+	vBox.Append(ui.NewLabel(""), false)
+	addTweetButton := ui.NewButton("Add tweet")
+	addTweetButton.OnClicked(func(button *ui.Button) {
+		openAddTweetWindow()
+	})
+	vBox.Append(addTweetButton, false)
+	vBox.Append(ui.NewLabel(""), false)
+	startButton := ui.NewButton("Start guffer")
+	vBox.Append(startButton, false)
+	vBox.Append(ui.NewLabel(""), false)
 	// About text
 	vBox.Append(ui.NewLabel(""), false)
 	about := ui.NewLabel("Guffer is open-source project! Contribute at https://github.com/mrichman/guffer")
 	vBox.Append(about, false)
+}
+
+func openAddTweetWindow() {
+	// Setup window
+	addTweetWindow := ui.NewWindow("Add scheduled tweet", 400, 200, false)
+	// Close callback
+	addTweetWindow.OnClosing(func(window *ui.Window) bool {
+		addTweetWindow.Destroy()
+		ui.Quit()
+		return false
+	})
+	// Also close callback
+	ui.OnShouldQuit(func() bool {
+		addTweetWindow.Destroy()
+		return true
+	})
+	addTweetWindow.Show()
 }
